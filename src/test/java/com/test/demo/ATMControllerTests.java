@@ -60,13 +60,15 @@ class ATMControllerTests {
 	public void setUp() {
 	    mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 	    
-	    Account account1=new Account(123456789L, "1234", 800.0, 200.0);
-    	Account account2=new Account(987654321L, "4321", 1230.0, 150.0);
+	    Account account1=new Account(120456789L, "1234", 800.0, 200.0);
+	    Account account2=new Account(220456789L, "1234", 800.0, 200.0);
+	    Account account3=new Account(320456789L, "1234", 800.0, 200.0);
+	    Account account4=new Account(420456789L, "1234", 800.0, 200.0);
     	
     	accountService.addNewAccount(account1);
     	accountService.addNewAccount(account2);
-    	
-    	
+    	accountService.addNewAccount(account3);
+    	accountService.addNewAccount(account4);
     	
     	Map<Integer, Integer> denominationNotesMap=new HashMap<Integer, Integer>();
     	denominationNotesMap.put(5, 20);
@@ -90,7 +92,7 @@ class ATMControllerTests {
 	public void testAccountBalanceEnquiry() throws Exception {
 		ATMTransaction atmTransaction = new ATMTransaction();
 		Account account=new Account();
-		account.setAccountNumber(123456789L);
+		account.setAccountNumber(120456789L);
 		account.setPin("1234");
 		atmTransaction.setAccount(account);
 
@@ -113,7 +115,7 @@ class ATMControllerTests {
 	public void test_BalanceAndWithdrawableAmount_AfterWithdrawingAmount() throws Exception {
 		ATMTransaction atmTransaction = new ATMTransaction();
 		Account account=new Account();
-		account.setAccountNumber(123456789L);
+		account.setAccountNumber(120456789L);
 		account.setPin("1234");
 		atmTransaction.setAccount(account);
 		atmTransaction.setWithdrawAmount(100);
@@ -129,7 +131,7 @@ class ATMControllerTests {
 	            .andExpect(status().isOk())
 	            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.account.balance").value("700.0"))
-	    		.andExpect(jsonPath("$.account.withdrawableAmount").value("1000.0"));
+	    		.andExpect(jsonPath("$.account.withdrawableAmount").value("900.0"));
 	    
 	}
 	
@@ -138,7 +140,7 @@ class ATMControllerTests {
 	public void test_WithdrawingMoreCashThanWithdrawableAmount_AfterWithdrawingAmount() throws Exception {
 		ATMTransaction atmTransaction = new ATMTransaction();
 		Account account=new Account();
-		account.setAccountNumber(123456789L);
+		account.setAccountNumber(220456789L);
 		account.setPin("1234");
 		atmTransaction.setAccount(account);
 		atmTransaction.setWithdrawAmount(1200);
@@ -154,7 +156,7 @@ class ATMControllerTests {
 	            .andExpect(status().isBadRequest())
 	            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.message").
-						value("You do not have enough balance in the account. (Total WithdrawableAmount amount: 900.0, Entered amount: 1200.) Please try a different amount"));
+						value("You do not have enough balance in the account. (Total WithdrawableAmount amount: 1000.0, Entered amount: 1200.) Please try a different amount"));
 	    
 	}
 	

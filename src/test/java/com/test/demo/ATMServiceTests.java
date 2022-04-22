@@ -69,12 +69,14 @@ class ATMServiceTests {
 	    mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 	    
 	    Account account1=new Account(123456789L, "1234", 800.0, 200.0);
-    	Account account2=new Account(987654321L, "4321", 1230.0, 150.0);
-    	
+	    Account account2=new Account(223456789L, "1234", 800.0, 200.0);
+	    Account account3=new Account(323456789L, "1234", 800.0, 200.0);
+	    Account account4=new Account(423456789L, "1234", 800.0, 200.0);
+	    
     	accountService.addNewAccount(account1);
     	accountService.addNewAccount(account2);
-    	
-    	
+    	accountService.addNewAccount(account3);
+    	accountService.addNewAccount(account4);
     	
     	Map<Integer, Integer> denominationNotesMap=new HashMap<Integer, Integer>();
     	denominationNotesMap.put(5, 20);
@@ -127,7 +129,7 @@ class ATMServiceTests {
 	public void test_BalanceAndWithdrawableAmount_AfterWithdrawingAmount() throws Exception, CustomException {
 		ATMTransaction atmTransaction = new ATMTransaction();
 		Account account=new Account();
-		account.setAccountNumber(123456789L);
+		account.setAccountNumber(223456789L);
 		account.setPin("1234");
 		atmTransaction.setAccount(account);
 		atmTransaction.setWithdrawAmount(100);

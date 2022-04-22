@@ -1,0 +1,116 @@
+# zinc test atm-application
+
+This is a SpringBoot application. Just run DemoApplication.java to start the app on the tomcat server, and you can start sending the REST requests.
+Derby database is used on the backend. It's a runtime db, so data is lost after the app stops each time.
+---------------------------------------------------------------------------------------------------------------|
+This app is dockerized and tested locally using Windows Docker application.
+Details can be found under Dockerfile.
+---------------------------------------------------------------------------------------------------------------|
+Following REST endpoints are available:
+1.
+For balance inquiry
+TYPE: POST
+URL: http://localhost:8080/accounts/balance
+CONTENT-TYPE: application/json,
+BODY:
+{
+	"account":{
+		"accountNumber":"123456789",
+		"pin":"1234"
+	}
+}
+
+Sample success response:
+{
+    "account": {
+        "accountNumber": 123456789,
+        "balance": 800,
+        "overdraft": 200,
+        "withdrawableAmount": 1000
+    }
+}
+
+2.
+To request cash withdraw from the atm
+TYPE: POST
+URL: http://localhost:8080/accounts/withdraw 
+CONTENT-TYPE: application/json,
+BODY:
+{
+	"account":{
+		"accountNumber":"123456789",
+		"pin":"1234"
+	},
+	"withdrawAmount":"15"
+}
+
+Sample success response:
+{
+    "account": {
+        "accountNumber": 123456789,
+        "balance": 785,
+        "overdraft": 200,
+        "withdrawableAmount": 985
+    },
+    "withdrawAmount": 15,
+    "dispensedNotes": {
+        "5": 1,
+        "10": 1,
+        "20": 0,
+        "50": 0
+    }
+}
+
+3.
+This endpoint is not part of the requirement, but it has been included just for ease of testing.
+To fetch details of atm machines
+TYPE: GET
+URL: http://localhost:8080/atmmachine 
+CONTENT-TYPE: application/json,
+
+Sample success response:
+{
+    "id": 3,
+    "denominationNotesMap": {
+        "5": 19,
+        "10": 29,
+        "20": 30,
+        "50": 10
+    },
+    "totalCashAvailable": 1485
+}
+
+---------------------------------------------------------------------------------------------------------------|
+Features:
+- Proper error messages(listed below) are returned to the client in case of input validations and exceptions
+- While withdrawing from ATM, minimum number of notes are dispensed
+- Instead of storing plain PINs in database, PINs are SALTed & hashed using SHA-512 and then stored to the db.
+
+The development yet completed should only be considered as PoC. There are lots of open issues with the app where improvement can be done.
+---------------------------------------------------------------------------------------------------------------|
+
+Input Validation and error handling:
+Basic validations have been added just to show the PoC. All the validations can be added to the app going forward.
+E.g.
+"Please enter the pin and try again."
+"Invalid PIN. Please try again."
+"Please enter the account number and try again."
+"Sorry, we can not dispense the entered amount. Please try a different amount."
+"Please enter a valid withdrawal amount & try again."
+"Account does not exist. Please try again."
+"You do not have enough balance in the account. Please try a different amount"
+---------------------------------------------------------------------------------------------------------------|
+Testing:
+Basic test cases are added for the controller layer and service layer using JUnit and MockMvc.
+---------------------------------------------------------------------------------------------------------------|
+Enhancements that can be done:
+- Currently, for calculating denominations and number of notes to be dispensed, a greedy approach is used along with recursion. This approach has O(n^2)
+complexity. Although this would do fine for an ATM machine which generally has limited supply of notes, a proper and faster way is to use dynamic programming 
+to select the denominations and number of notes to be dispensed. Dynamic programming would significantly reduce the complexity of the algorithm.
+- More and proper comments can be added to the code.
+- Properties file can be used to read error messages, instead of hardcoding them.
+- XML support can be provided, along with existing JSON.
+- Endpoints can be secured (e.g. Basic Authentication) using Spring Security features.
+- Logs can be added for fault finding in production grade app.
+- Code coverage in testing can be improved.
+

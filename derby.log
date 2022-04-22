@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Fri Apr 22 15:23:44 IST 2022:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0180-51a8-42be-00000195ede0 
+on database directory memory:C:\Users\paprabhu\OneDrive - Deloitte (O365D)\Desktop\personal\study\iv\zinc\zinc test docker\3628441a-ff05-4b18-acfa-bc28f088d36c with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@659e0bfd 
+Loaded from file:/C:/Users/paprabhu/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
+java.vendor=Oracle Corporation
+java.runtime.version=17.0.2+8-LTS-86
+user.dir=C:\Users\paprabhu\OneDrive - Deloitte (O365D)\Desktop\personal\study\iv\zinc\zinc test docker
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
